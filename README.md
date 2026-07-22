@@ -73,14 +73,6 @@ Isso baixa o projeto para uma pasta chamada `CaixaEletronicoSQLite` no seu compu
 cd CaixaEletronicoSQLite/CaixaEletronicoSQLite
 ```
 
-O comando `cd` (*change directory*) muda a pasta em que o terminal está trabalhando. Aqui você precisa entrar duas vezes na pasta com esse nome: a primeira é a pasta que o `git clone` criou (a raiz do repositório), e a segunda é a pasta do projeto de fato — onde fica o arquivo `.csproj` que o `dotnet` precisa encontrar para rodar o programa.
-
-Se quiser confirmar que está no lugar certo antes de continuar:
-```bash
-ls
-```
-Deve aparecer `Program.cs`, `Database`, `Models`, `Servicos` e o arquivo `CaixaEletronicoSQLite.csproj` na listagem.
-
 ### 4. Restaure as dependências do projeto
 
 ```bash
