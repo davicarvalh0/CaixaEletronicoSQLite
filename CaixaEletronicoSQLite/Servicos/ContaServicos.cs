@@ -12,6 +12,18 @@ public class ContaServicos
         using var connection = new SqliteConnection(ConnectionString);
         connection.Open();
 
+        if (string.IsNullOrWhiteSpace(nomeTitular))
+        {
+            Console.WriteLine("O nome não pode estar vazio");
+            return -1;
+        }
+
+        if (nomeTitular.Length <= 3)
+        {
+            Console.WriteLine("O nome precisa ter mais de 3 letras");
+            return -1;
+        }
+        
         string query = """
                        INSERT INTO conta (NomeTitular, Saldo)
                        VALUES (@NomeTitular, 0);
@@ -53,7 +65,7 @@ public class ContaServicos
         using var comando = new SqliteCommand(query, connection);
         comando.Parameters.AddWithValue("@valor", valor);
         comando.Parameters.AddWithValue("@numeroconta", numeroConta);
-        comando.Parameters.AddWithValue("@data", DateTime.Now.ToString("s"));
+        comando.Parameters.AddWithValue("@data", DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss"));
 
         comando.ExecuteNonQuery();
         Console.WriteLine("Depósito realizado com sucesso");
@@ -107,14 +119,15 @@ public class ContaServicos
         using var comando = new SqliteCommand(query, connection);
         comando.Parameters.AddWithValue("@valor", valor);
         comando.Parameters.AddWithValue("@numeroConta", numeroConta);
-        comando.Parameters.AddWithValue("@data", DateTime.Now.ToString("s"));
-        
-        Console.WriteLine($"Saque realizado com sucesso");
+        comando.Parameters.AddWithValue("@data", DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss"));
         
         comando.ExecuteNonQuery();
+        
+        Console.WriteLine($"Saque realizado com sucesso");
     }
     
     public void Transferir(int contaOrigem, int contaDestino, double valor)
+    
     {
         if (valor <= 0)
         {
@@ -189,13 +202,14 @@ public class ContaServicos
                        """;
         using var comando = new SqliteCommand(query, connection);
         comando.Parameters.AddWithValue("@valor", valor);
-        comando.Parameters.AddWithValue("@data", DateTime.Now.ToString("s"));
+        comando.Parameters.AddWithValue("@data", DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss"));
         comando.Parameters.AddWithValue("@contaOrigem", contaOrigem);
         comando.Parameters.AddWithValue("@contaDestino", contaDestino);
         
-        Console.WriteLine($"Tranferência realizado com sucesso");
+        comando.ExecuteNonQuery();    
         
-        comando.ExecuteNonQuery();    }
+        Console.WriteLine("Transferência realizado com sucesso");
+    }
 
     public void ConsultarSaldo(int numeroConta)
     {
@@ -209,7 +223,7 @@ public class ContaServicos
         using var reader = comando.ExecuteReader();
         if (reader.Read())
         {
-            Console.WriteLine($"Titular: {reader["NomeTitular"]} | Saldo: {reader["Saldo"]}");
+            Console.WriteLine($"Titular: {reader["NomeTitular"]} \nSaldo: {reader["Saldo"]}\n");
         }
         else
         {

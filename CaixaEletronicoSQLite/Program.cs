@@ -44,6 +44,10 @@ while (true)
             string nomeTitular = Console.ReadLine();
             var contaServicos = new ContaServicos();
             int numeroConta = contaServicos.CriarConta(nomeTitular);
+            if (numeroConta == -1)
+            {
+                break;
+            }
             Console.WriteLine("Conta criada com sucesso");
             Console.WriteLine($"Número da conta: {numeroConta}");
             break;
@@ -51,6 +55,8 @@ while (true)
 
         case 2:
         {
+            var contaServicos = new ContaServicos();
+            contaServicos.ListarContas();
             Console.WriteLine("Digite o número da conta que você deseja fazer um depósito:");
             if (!int.TryParse(Console.ReadLine(), out int numeroConta))
             {
@@ -63,7 +69,6 @@ while (true)
                 Console.WriteLine("Valor inválido");
                 break;
             }
-            var contaServicos = new ContaServicos();
             contaServicos.Depositar(numeroConta, valorDeposito);
             break;
         }
@@ -71,6 +76,8 @@ while (true)
 
         case 3:
         {
+            var contaServicos = new ContaServicos();
+            contaServicos.ListarContas();
             Console.WriteLine("Digite o número da conta que você quer sacar um valor: ");
             if (!int.TryParse(Console.ReadLine(), out int numeroConta))
             {
@@ -83,13 +90,14 @@ while (true)
                 Console.WriteLine("Valor inválido");
                 break;
             }            
-            var contaServicos = new ContaServicos();
             contaServicos.Sacar(numeroConta, valorSaque);
             break;
         }
 
         case 4:
         {
+            var contaServicos = new ContaServicos();
+            contaServicos.ListarContas();
             Console.WriteLine("Digite o número da conta do titular:");
             if (!int.TryParse(Console.ReadLine(), out int contaOrigem))
             {
@@ -108,33 +116,34 @@ while (true)
                 Console.WriteLine("Valor inválido");
                 break;
             }
-            var contaServicos = new ContaServicos();
             contaServicos.Transferir(contaOrigem, contaDestino, valorTransferencia);
             break;
         }
             
         case 5:
         {
+            var contaServicos = new ContaServicos();
+            contaServicos.ListarContas();
             Console.Write("Digite o numero da conta que você quer ver o saldo: ");
             if (!int.TryParse(Console.ReadLine(), out int numeroConta))
             {
                 Console.WriteLine("Número de conta inválido");
                 break;
             }            
-            var contaServicos = new ContaServicos();
             contaServicos.ConsultarSaldo(numeroConta);
             break;
         }
         
         case 6:
         {
+            var contaServicos = new ContaServicos();
+            contaServicos.ListarContas();
             Console.WriteLine("De qual conta você quer consultar o histórico?");
             if (!int.TryParse(Console.ReadLine(), out int numeroConta))
             {
                 Console.WriteLine("Número de conta inválido");
                 break;
             }            
-            var contaServicos = new ContaServicos();
             contaServicos.ConsultarHistorico(numeroConta);
             break;
         }
