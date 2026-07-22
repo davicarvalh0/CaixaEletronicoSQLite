@@ -11,7 +11,7 @@ Projeto desenvolvido como desafio de backend, com foco em persistência de dados
 - Transferir entre contas
 - Consultar saldo
 - Consultar histórico de transações
-- -Listar todas as contas
+- Listar todas as contas
 
 ## 🛠️ Tecnologias
 
