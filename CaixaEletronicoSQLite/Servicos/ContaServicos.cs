@@ -11,6 +11,8 @@ public class ContaServicos
     {
         using var connection = new SqliteConnection(ConnectionString);
         connection.Open();
+        
+        nomeTitular = nomeTitular.Trim();
 
         if (string.IsNullOrWhiteSpace(nomeTitular))
         {
@@ -208,7 +210,7 @@ public class ContaServicos
         
         comando.ExecuteNonQuery();    
         
-        Console.WriteLine("Transferência realizado com sucesso");
+        Console.WriteLine("Transferência realizada com sucesso");
     }
 
     public void ConsultarSaldo(int numeroConta)
