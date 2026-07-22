@@ -99,14 +99,3 @@ O menu vai aparecer direto no terminal:
 ```
 
 Basta digitar o número da opção e seguir as instruções na tela.
-
-## 💾 Sobre a persistência
-
-Todas as operações são salvas no arquivo `caixa.db` — feche o programa, abra de novo, e suas contas e saldos continuam exatamente onde pararam.
-
-## 📏 Regras de negócio
-
-- Toda conta tem um número único, gerado pelo próprio banco (`AUTOINCREMENT`)
-- Saldo nunca fica negativo — saques e transferências acima do saldo disponível são bloqueados
-- Toda transação (depósito, saque ou transferência) fica registrada com data, hora, tipo e valor
-- Não é possível transferir para a própria conta
