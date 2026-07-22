@@ -79,16 +79,11 @@ cd CaixaEletronicoSQLite/CaixaEletronicoSQLite
 dotnet restore
 ```
 
-Esse comando baixa os pacotes que o projeto usa (como o `Microsoft.Data.Sqlite`, responsável por conectar com o banco SQLite), com base no que está listado no arquivo `.csproj`. Normalmente o `dotnet run` já faz isso sozinho na primeira vez, mas rodar explicitamente garante que tudo esteja pronto antes de iniciar.
-
 ### 5. Rode o projeto
 
 ```bash
 dotnet run
 ```
-
-Na primeira execução, um arquivo `caixa.db` é criado automaticamente na pasta do projeto — é nele que todas as contas e transações ficam salvas.
-
 O menu vai aparecer direto no terminal:
 
 ```
