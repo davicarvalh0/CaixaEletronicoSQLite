@@ -1,9 +1,9 @@
-# 🏧 Caixa Eletrônico SQLite
+# Caixa Eletrônico SQLite
 
 Sistema de caixa eletrônico em C# rodando direto no terminal.
 Projeto desenvolvido como desafio de backend, com foco em persistência de dados com SQLite, boas práticas de acesso a banco (queries parametrizadas, sem SQL injection) e organização em camadas.
 
-## ✨ Funcionalidades
+## Funcionalidades
 
 - Criar conta (com número gerado automaticamente)
 - Depositar
@@ -13,12 +13,12 @@ Projeto desenvolvido como desafio de backend, com foco em persistência de dados
 - Consultar histórico de transações
 - Listar todas as contas
 
-## 🛠️ Tecnologias
+## Tecnologias
 
 - C# (.NET)
 - [SQLite](https://www.sqlite.org/) via [Microsoft.Data.Sqlite](https://learn.microsoft.com/en-us/dotnet/standard/data/sqlite/)
 
-## 📂 Estrutura do projeto
+## Estrutura do projeto
 
 ```
 CaixaEletronicoSQLite/
@@ -32,7 +32,7 @@ CaixaEletronicoSQLite/
     └── ContaServicos.cs
 ```
 
-## ▶️ Como rodar localmente
+## Como rodar localmente
 
 ### 1. Instale o .NET SDK
 
