@@ -16,13 +16,13 @@ public class ContaServicos
 
         if (string.IsNullOrWhiteSpace(nomeTitular))
         {
-            Console.WriteLine("O nome não pode estar vazio");
+            Console.WriteLine("\nO nome não pode estar vazio");
             return -1;
         }
 
         if (nomeTitular.Length <= 3)
         {
-            Console.WriteLine("O nome precisa ter mais de 3 letras");
+            Console.WriteLine("\nO nome precisa ter mais de 3 letras");
             return -1;
         }
         
@@ -42,7 +42,7 @@ public class ContaServicos
     {
         if (valor <= 0)
         {
-            Console.WriteLine("O depósito deve ser maior que 0");
+            Console.WriteLine("\nO depósito deve ser maior que 0");
             return;
         }
 
@@ -51,7 +51,7 @@ public class ContaServicos
 
         if (!ContaExiste(numeroConta, connection))
         {
-            Console.WriteLine("Conta não encontrada");
+            Console.WriteLine("\nConta não encontrada");
             return;
         }
         
@@ -70,14 +70,14 @@ public class ContaServicos
         comando.Parameters.AddWithValue("@data", DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss"));
 
         comando.ExecuteNonQuery();
-        Console.WriteLine("Depósito realizado com sucesso");
+        Console.WriteLine("\nDepósito realizado com sucesso\n");
     }
 
     public void Sacar(int numeroConta, double valor)
     {
         if (valor <= 0)
         {
-            Console.WriteLine("O valor deve ser maior que 0");
+            Console.WriteLine("\nO valor deve ser maior que 0");
             return;
         }
         
@@ -86,7 +86,7 @@ public class ContaServicos
         
         if (!ContaExiste(numeroConta, connection))
         {
-            Console.WriteLine("Conta não encontrada.");
+            Console.WriteLine("\nConta não encontrada.");
             return;
         }
         
@@ -97,7 +97,7 @@ public class ContaServicos
         var resultadoSaldo = comandoSaldo.ExecuteScalar();
         if (resultadoSaldo == null)
         {
-            Console.WriteLine("Conta não encontrada");
+            Console.WriteLine("\nConta não encontrada");
             return;
         }
         
@@ -105,7 +105,7 @@ public class ContaServicos
 
         if (saldoAtual < valor)
         {
-            Console.WriteLine("Saldo insuficiente");
+            Console.WriteLine("\nSaldo insuficiente");
             return;
         }
         
@@ -121,11 +121,11 @@ public class ContaServicos
         using var comando = new SqliteCommand(query, connection);
         comando.Parameters.AddWithValue("@valor", valor);
         comando.Parameters.AddWithValue("@numeroConta", numeroConta);
-        comando.Parameters.AddWithValue("@data", DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss"));
+        comando.Parameters.AddWithValue("@data", DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"));
         
         comando.ExecuteNonQuery();
         
-        Console.WriteLine($"Saque realizado com sucesso");
+        Console.WriteLine("\nSaque realizado com sucesso\n");
     }
     
     public void Transferir(int contaOrigem, int contaDestino, double valor)
@@ -133,13 +133,13 @@ public class ContaServicos
     {
         if (valor <= 0)
         {
-            Console.WriteLine("O valor deve ser maior que 0");
+            Console.WriteLine("\nO valor deve ser maior que 0");
             return;
         }
 
         if (contaOrigem == contaDestino)
         {
-            Console.WriteLine("Você não pode transferir para a mesma conta");
+            Console.WriteLine("\nVocê não pode transferir para a mesma conta");
             return;
         }
         
@@ -148,13 +148,13 @@ public class ContaServicos
         
         if (!ContaExiste(contaOrigem, connection))
         {
-            Console.WriteLine("Conta de origem não encontrada");
+            Console.WriteLine("\nConta de origem não encontrada");
             return;
         }
         
         if (!ContaExiste(contaDestino, connection))
         {
-            Console.WriteLine("Conta de destino não encontrada");
+            Console.WriteLine("\nConta de destino não encontrada");
             return;
         }
         
@@ -166,7 +166,7 @@ public class ContaServicos
 
         if (numDestinos == 0)
         {
-            Console.WriteLine("Conta de destino não encontrada");
+            Console.WriteLine("\nConta de destino não encontrada");
             return;
         }
         
@@ -178,7 +178,7 @@ public class ContaServicos
         
         if (resultadoSaldo == null)
         {
-            Console.WriteLine("Conta de origem não encontrada");
+            Console.WriteLine("\nConta de origem não encontrada");
             return;
         }
         
@@ -186,7 +186,7 @@ public class ContaServicos
 
         if (saldoOrigem < valor)
         {
-            Console.WriteLine("Saldo insuficiente");
+            Console.WriteLine("\nSaldo insuficiente");
             return;
         }
         
@@ -204,16 +204,16 @@ public class ContaServicos
                        """;
         using var comando = new SqliteCommand(query, connection);
         comando.Parameters.AddWithValue("@valor", valor);
-        comando.Parameters.AddWithValue("@data", DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss"));
+        comando.Parameters.AddWithValue("@data", DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"));
         comando.Parameters.AddWithValue("@contaOrigem", contaOrigem);
         comando.Parameters.AddWithValue("@contaDestino", contaDestino);
         
         comando.ExecuteNonQuery();    
         
-        Console.WriteLine("Transferência realizada com sucesso");
+        Console.WriteLine("\nTransferência realizada com sucesso\n");
     }
 
-    public void ConsultarSaldo(int numeroConta)
+    public bool ConsultarSaldo(int numeroConta)
     {
         using var connection = new SqliteConnection(ConnectionString);
         connection.Open();
@@ -222,15 +222,19 @@ public class ContaServicos
         using var comando = new SqliteCommand(query, connection);
         comando.Parameters.AddWithValue("@numeroConta", numeroConta);
         
+        var ptBr = new CultureInfo("pt-BR");
+        
         using var reader = comando.ExecuteReader();
         if (reader.Read())
         {
-            Console.WriteLine($"Titular: {reader["NomeTitular"]} \nSaldo: {reader["Saldo"]}\n");
+            Console.WriteLine($"\nTitular: {reader["NomeTitular"]} \nSaldo: {Convert.ToDouble(reader["Saldo"]).ToString("C2", ptBr)}\n");
         }
         else
         {
-            Console.WriteLine("Conta não encontrada");
+            Console.WriteLine("\nConta não encontrada");
+            return false;
         }
+        return true;
     }
     
     public void ConsultarHistorico(int numeroConta)
@@ -240,11 +244,11 @@ public class ContaServicos
         
         if (!ContaExiste(numeroConta, connection))
         {
-            Console.WriteLine("Conta não encontrada");
+            Console.WriteLine("\nConta não encontrada");
             return;
         }
         
-        string query = "SELECT TipoTransacao, Valor, DataTransacao, ContaDestino " +
+        string query = "SELECT TipoTransacao, Valor, DataTransacao, ContaOrigem, ContaDestino " +
                        "FROM transacao " +
                        "WHERE ContaOrigem = @numeroconta OR ContaDestino = @numeroconta";
         
@@ -258,12 +262,12 @@ public class ContaServicos
         while (reader.Read())
         {
             vazio = false;
-            Console.WriteLine($"Data: {reader["DataTransacao"]} \nTipo: {reader["TipoTransacao"]} \nValor: {Convert.ToDouble(reader["Valor"]).ToString("C2", ptBr)} \nConta de destino: {reader["ContaDestino"]}\n");
+            Console.WriteLine($"\nData: {reader["DataTransacao"]} \nTipo: {reader["TipoTransacao"]} \nValor: {Convert.ToDouble(reader["Valor"]).ToString("C2", ptBr)} \nConta de Origem: {reader["ContaOrigem"]} \nConta de destino: {reader["ContaDestino"]}\n");
         }
 
         if (vazio)
         {
-            Console.WriteLine("Nenhum histórico disponivel nessa conta");
+            Console.WriteLine("\nNenhum histórico disponivel nessa conta");
         }
     }
     private bool ContaExiste(int numeroConta, SqliteConnection connection)
@@ -276,7 +280,7 @@ public class ContaServicos
         return quantidade == 1;
     }
 
-    public void ListarContas()
+    public bool ListarContas()
     {
         using var connection = new SqliteConnection(ConnectionString);
         connection.Open();
@@ -288,12 +292,15 @@ public class ContaServicos
         while (reader.Read())
         {
             vazio = false;
-            Console.WriteLine($"Numero da conta: {reader["NumeroConta"]} \nNome do titular: {reader["NomeTitular"]}\n");
+            Console.WriteLine($"\nNumero da conta: {reader["NumeroConta"]} \nNome do titular: {reader["NomeTitular"]}\n");
         }
 
         if (vazio)
         {
-            Console.WriteLine("Nenhuma conta cadastrada");
+            Console.WriteLine("\nNenhuma conta cadastrada");
+            return false;
         }
+
+        return true;
     }
 }
